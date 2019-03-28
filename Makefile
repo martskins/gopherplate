@@ -1,13 +1,11 @@
 .PHONY: run build
 
-run: build
-	./sqlgenx \
-		-src ~/go/src/github.com/martskins/restoo/main.go \
-		-target Item
+generate:
+	go generate ./...
 
-build:
+build: generate
 	go-bindata out.tmpl
-	go build .
+	go build -o gopherplate *.go
 
 install: build
 	go install
