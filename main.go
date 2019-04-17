@@ -18,6 +18,7 @@ type generator struct {
 	Source    string   `short:"s" long:"source" description:"pattern to use to get source files" default:"."`
 	TableName []string `short:"t" long:"table-name" description:"overrides the default table name for a struct: StructName:table_name"`
 	Named     bool     `long:"named" description:"use named arguments in the generated sql"`
+	Export    bool     `long:"export" description:"exports all sql statements generated"`
 }
 
 func main() {
@@ -44,11 +45,12 @@ func main() {
 	}
 
 	input := templateInput{
-		Structs:     sms,
-		Insert:      true,
-		Update:      true,
-		Join:        true,
-		PackageName: g.Package,
+		Structs:      sms,
+		Insert:       true,
+		Update:       true,
+		Join:         true,
+		PackageName:  g.Package,
+		ShouldExport: g.Export,
 	}
 
 	if err := g.generate(&input); err != nil {

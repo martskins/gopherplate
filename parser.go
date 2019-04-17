@@ -46,11 +46,12 @@ type field struct {
 }
 
 type templateInput struct {
-	Structs     []*structModel
-	Insert      bool
-	Update      bool
-	Join        bool
-	PackageName string
+	Structs      []*structModel
+	Insert       bool
+	Update       bool
+	Join         bool
+	PackageName  string
+	ShouldExport bool
 }
 
 type structModel struct {
