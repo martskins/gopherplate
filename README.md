@@ -38,7 +38,8 @@ package main
 //go:generate gopherplate --source . -t User:users --named
 
 type User struct {
-	ID 	int 		`db:"id" gpl:"id"`
+	ID 	int 		`db:"id" gpl:"id,select"` // the select modifier used here is to ommit the id in
+							// insert and update statements
 	Name 	string 		`db:"name" gpl:"name"`
 	Email 	string 		`db:"email" gpl:"email"`
 }
