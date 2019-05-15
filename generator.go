@@ -19,6 +19,7 @@ func (g *generator) generate(params *templateInput) error {
 
 	funcs := template.FuncMap{
 		"Contains": strings.Contains,
+		"Dec":      func(i int) int { return i - 1 },
 		"SanitizeType": func(str string) string {
 			return strings.Replace(str, "*", "", -1)
 		},

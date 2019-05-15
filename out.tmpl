@@ -28,10 +28,9 @@ package {{ .PackageName }}
 
   // Valid indicates whether there is a {{$struct.Name}} in this Null{{$struct.Name}}
   func (n *Null{{$struct.Name}}) Valid() bool {
-  {{range $field := $struct.Fields}}
-    if n.{{$field.Name}} != nil {
+  {{range $index, $field := $struct.Fields}} {{ if and (eq $index 0) (gt (len $struct.Fields) 1) }} if n.{{$field.Name}} != nil || {{ else if eq $index 0 }} if n.{{$field.Name}} != nil { {{ else if eq $index (Dec (len $struct.Fields)) }} n.{{$field.Name}} != nil { {{ else if gt $index 0 }} n.{{$field.Name}} != nil || {{ end }} {{end}}
       return true
-    }{{end}}
+    }
 
     return false
   }
