@@ -46,8 +46,8 @@ type User struct {
 type Client struct {
 	UserID 	int 	`db:"user_id" gpl:"user_id"`
 	*User 	`db:"users" gpl:"users,select"` 	// the name of the prefix (users), on the field you want
-				// to use for the related model, must match the name
-				// of the database table you're joining
+							// to use for the related model, must match the name
+							// of the database table you're joining
 }
 
 ```
@@ -78,13 +78,7 @@ type NullUser struct {
 
 // Valid indicates whether there is a User in this NullUser
 func (n *NullUser) Valid() bool {
-	if n.ID != nil {
-		return true
-	}
-	if n.Name != nil {
-		return true
-	}
-	if n.Email != nil {
+	if n.ID != nil || n.Name != nil || n.Email != nil {
 		return true
 	}
 	return false
