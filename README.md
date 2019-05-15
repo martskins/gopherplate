@@ -35,7 +35,7 @@ For example:
 // main.go
 package main
 
-//go:generate sqlgenx --source . -t User:users --named
+//go:generate gopherplate --source . -t User:users --named
 
 type User struct {
 	ID 	int 		`db:"id" gpl:"id"`
@@ -69,12 +69,14 @@ const updateUser = `UPDATE users SET name = :name, email = :email WHERE `
 
 const joinUser = `users.id as "users.id", users.name as "users.name" users.email as "users.email"`
 
+// NullUser is a nullable User, mostly useful for left joins
 type NullUser struct {
 	ID *int `db:"id"`
 	Name *string `db:"name"`
 	Email *string `db:"email"`
 }
 
+// Valid indicates whether there is a User in this NullUser
 func (n *NullUser) Valid() bool {
 	if n.ID != nil {
 		return true
@@ -88,6 +90,7 @@ func (n *NullUser) Valid() bool {
 	return false
 }
 
+// Get returns the User in this NullUser
 func (n *User) Get() *User {
 	if !n.Valid() {
 		return nil
@@ -99,6 +102,16 @@ func (n *User) Get() *User {
 		Email: *n.Email,
 	}
 }
+
+// MarshalJSON marshals a NullUser to json
+func (n *NullUser) MarshalJSON() ([]byte, error) {
+	if !n.Valid() {
+		return []byte("null"), nil
+	}
+
+	return json.Marshal(n.Get())
+}
+
 ```
 
 the output includes statements for select, update and join and also a Nullable version of the
